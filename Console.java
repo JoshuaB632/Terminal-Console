@@ -75,9 +75,9 @@ public class Console{
         currentInterface = "boot";
         System.out.println("WIP: BOOT");
         if(!integrityChecks.get("boot")){
-            System.out.println("Failed to run boot...");
+            slowWrite("Failed to run boot...");
             powered = false;
-            System.out.println("Exiting...");
+            slowWrite("Exiting...");
             return;
         }
 
@@ -104,15 +104,15 @@ public class Console{
                 String[] comms = getCommandsInLevel(level);
                 for(String s : comms){
                     slowWrite("\t\t" + s + "...", 0);
-                    sleep(((int) Math.random() * 2000) + 500);
+                    sleep(((int) Math.random() * 500) + 1250);
                     printIntegrity((integrityChecks.get(s)) ? 1 : -1);
                 }
             }
             sleep(200);
         }
 
-        System.out.println("Boot complete...");
-        System.out.println("Loading Main Menu...");
+        slowWrite("Boot complete...");
+        slowWrite("Loading Main Menu...");
         mainMenu();
     }
     
@@ -120,23 +120,24 @@ public class Console{
         currentInterface = "main_menu";
         System.out.println("WIP: MAIN_MENU");
 
-        boolean firstTime = true;
+        slowWrite("WIP: welcome message, recommend \'help\'");
         while(powered){
-            if(firstTime){
-                System.out.println("WIP: welcome message, recommend \'help\'");
-                firstTime = false;
-            }
-
             System.out.print("Terminal:> ");
             ArrayList<String> command = split(next(true));
             String input = command.get(0);
 
-            if(input.equals("shutdown")){
+			if(input.equals("boot")){
+				slowWrite("Boot is a built-in program and cannot be called manually.");
+			}
+			else if(input.equals("main_menu")){
+				slowWrite("Already running main_menu.");
+			}
+            else if(input.equals("shutdown")){
                 if(integrityChecks.get("shutdown")){
                     shutdown();
                 }
                 else{
-                    System.out.println("Program \'shutdown\' is not stable.");
+                    slowWrite("Program \'shutdown\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -152,7 +153,7 @@ public class Console{
                     }
                 }
                 else{
-                    System.out.println("Program \'help\' is not stable.");
+                    slowWrite("Program \'help\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -162,7 +163,7 @@ public class Console{
                     settings();
                 }
                 else{
-                    System.out.println("Program \'settings\' is not stable.");
+                    slowWrite("Program \'settings\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -172,7 +173,7 @@ public class Console{
                     system_information();
                 }
                 else{
-                    System.out.println("Program \'system_information\' is not stable.");
+                    slowWrite("Program \'system_information\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -183,12 +184,12 @@ public class Console{
                         repair(command.get(1));
                     }
                     else{
-                        System.out.println("Usage: repair [TARGET]");
-                        System.out.println("Try \'help repair\' for more information.");
+                        slowWrite("Usage: repair [TARGET]");
+                        slowWrite("Try \'help repair\' for more information.");
                     }
                 }
                 else{
-                    System.out.println("Program \'repair\' is not stable.");
+                    slowWrite("Program \'repair\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -198,7 +199,7 @@ public class Console{
                     reboot();
                 }
                 else{
-                    System.out.println("Program \'reboot\' is not stable.");
+                    slowWrite("Program \'reboot\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -209,7 +210,7 @@ public class Console{
                     query();
                 }
                 else{
-                    System.out.println("Program \'query\' is not stable.");
+                    slowWrite("Program \'query\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -219,7 +220,7 @@ public class Console{
                     logs();
                 }
                 else{
-                    System.out.println("Program \'logs\' is not stable.");
+                    slowWrite("Program \'logs\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -229,7 +230,7 @@ public class Console{
                     recipes();
                 }
                 else{
-                    System.out.println("Program \'recipes\' is not stable.");
+                    slowWrite("Program \'recipes\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -239,7 +240,7 @@ public class Console{
                     disc();
                 }
                 else{
-                    System.out.println("Program \'disc\' is not stable.");
+                    slowWrite("Program \'disc\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -250,7 +251,7 @@ public class Console{
                     map();
                 }
                 else{
-                    System.out.println("Program \'map\' is not stable.");
+                    slowWrite("Program \'map\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -260,7 +261,7 @@ public class Console{
                     scan();
                 }
                 else{
-                    System.out.println("Program \'scan\' is not stable.");
+                    slowWrite("Program \'scan\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
@@ -271,14 +272,14 @@ public class Console{
                     game();
                 }
                 else{
-                    System.out.println("Program \'game\' is not stable.");
+                    slowWrite("Program \'game\' is not stable.");
                     //Eventually add option for user to proceed even if not stable,
                     //  causing either a crash or only partial functionality
                 }
             }
 
             else{
-                System.out.println("-bash: " + input + ": command not found");
+                slowWrite("-bash: " + input + ": command not found");
                 //maybe add a counter and if enough unrecognized commands are thrown
                 //  then tell the player they can use 'help'
             }
@@ -301,6 +302,8 @@ public class Console{
         System.out.println("HELP UNFINISHED...\n");
         System.out.println("----Commands----");
         System.out.println("Essential (Level A)");
+		System.out.println("\tboot");
+		System.out.println("\tmain_menu");
         System.out.println("\tshutdown");
 
         System.out.println("Important (Level B)");
@@ -324,7 +327,9 @@ public class Console{
         System.out.println("\tgame");
         System.out.println("---------------");
     }
-    public void help(String componentName)
+    public void help(String componentName){
+		
+	}
     
     public void settings(){
         System.out.println("WIP: SETTINGS");
@@ -333,23 +338,23 @@ public class Console{
     public void system_information(){
         System.out.println("WIP: SYSTEM_INFORMATION");
 
-        System.out.println("Stats:");
-        System.out.println("\tTesting latency...");
-        System.out.println("\t\tWIP");
-        System.out.println("\tlatency: 0ms");
-        System.out.println("\tTesting memory...");
-        System.out.println("\t\tWIP");
-        System.out.println("\tmemory: 256MB");
-        System.out.println("\tTesting hard drive...");
-        System.out.println("\t\tWIP");
-        System.out.println("\thard drive: 16GB");
-        System.out.println("\tChecking battery...");
-        System.out.println("\tbattery: 98%");
+        slowWrite("Stats:");
+        slowWrite("\tTesting latency...");
+        slowWrite("\t\tWIP");
+        slowWrite("\tlatency: 0ms");
+        slowWrite("\tTesting memory...");
+        slowWrite("\t\tWIP");
+        slowWrite("\tmemory: 256MB");
+        slowWrite("\tTesting hard drive...");
+        slowWrite("\t\tWIP");
+        slowWrite("\thard drive: 16GB");
+        slowWrite("\tChecking battery...");
+        slowWrite("\tbattery: 98%");
         System.out.println();
 
-        System.out.println("Program Structure");
+        slowWrite("Program Structure");
         for(char level = 'A'; level <= MAX_LEVEL; level++){
-            System.out.println("\tLevel " + level + "...");
+            slowWrite("\tLevel " + level + "...");
             String[] comms = getCommandsInLevel(level);
             for(String s : comms){
                 System.out.print("\t\t" + s + "...");
@@ -374,19 +379,19 @@ public class Console{
             }
         }
         if(!valid){
-            System.out.println("repair: invalid option -- \'" + componentName + "\'");
-            System.out.println("Try \'help repair\' for more information.");
+            slowWrite("repair: invalid option -- \'" + componentName + "\'");
+            slowWrite("Try \'help repair\' for more information.");
             return;
         }
 
-        System.out.println("Attempting to repair \'" + componentName + "\'...");
+        slowWrite("Attempting to repair \'" + componentName + "\'...");
         System.out.println("\tWIP");
         if(!integrityChecks.get(componentName)){ //Need to make an actual check to see if it can be repaired
             integrityChecks.put(componentName, true);
-            System.out.println("\'" + componentName + "\' has been repaired!");
+            slowWrite("\'" + componentName + "\' has been repaired!");
         }
         else{
-            System.out.println("\'" + componentName + "\' is already repaired!");
+            slowWrite("\'" + componentName + "\' is already repaired!");
         }
     }
 
@@ -402,27 +407,26 @@ public class Console{
         System.out.println("*insert UNIN logo here*");
         String[] percents = new String[] {"10%", "20%", "47%", "60%", "81%", "87%", "98%", "100%"};
         for(int i = 0; i < percents.length; i++){
-            System.out.println("checking file integrity..." + percents[i]);
+            slowWrite("checking file integrity..." + percents[i]);
         }
-        System.out.println("running UNIversal_Notes.exe...");
-        System.out.println();
+        slowWrite("running UNIversal_Notes.exe...", 2);
 
         System.out.print("Welcome to UNIversal Notes! ");
         String input = "";
         do{
             if(input.equals("")){
-                System.out.println("Type a word or phrase to look up more information about it. Remember to use underscores ('_') instead of spaces. If you'd like to see all available entries, please enter \'list_entries\'. If you'd like to exit the program, please enter \'back\'.");
+                slowWrite("Type a word or phrase to look up more information about it. Remember to use underscores ('_') instead of spaces. If you'd like to see all available entries, please enter \'list_entries\'. If you'd like to exit the program, please enter \'back\'.");
             } //TODO: Add more else-if for new info, maybe make it a helper method to look for it in a list
             else if(input.equals("list_entries")){
-                System.out.println("Available entries:");
-		System.out.println("    test");
+                slowWrite("Available entries:");
+				slowWrite("\ttest");
             }
             else if(input.equals("test")){
-                System.out.println("ENTRY NAME:");
-                System.out.println("ENTRY INFO");
+                slowWrite("ENTRY NAME:");
+                slowWrite("ENTRY INFO");
             }
             else{
-                System.out.println("Unfortunately, we do not have the information necessary to inform you about this subject."); //Add a feature to ask if they'd like to contribute to the database
+                slowWrite("Unfortunately, we do not have the information necessary to inform you about this subject."); //Add a feature to ask if they'd like to contribute to the database
             }
             System.out.println();
 
@@ -487,7 +491,7 @@ public class Console{
         String[] commandsToCheck = getCommandsInLevel(level);
         int count = 0;
         for(String s : commandsToCheck){
-            sleep(((int) Math.random() * 4000) + 1000);
+            sleep(((int) Math.random() * 1000) + 1500);
             if(integrityChecks.get(s)){
                 count++;
             }
