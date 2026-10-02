@@ -13,8 +13,10 @@ public class Console{
     private String currentInterface;
     private boolean powered;
 
-    //TODO: convert Boolean to custom Part class
+    //TODO: convert Boolean to custom Part class with integrity boolean inside
     private HashMap<String, Boolean> integrityChecks;
+	//TODO: convert String to custom Part class with description inside
+	private HashMap<String, String> commandChecks;
     
     //Constructors
     public Console(){
@@ -22,6 +24,7 @@ public class Console{
         currentInterface = "constructor";
         powered = false;
         integrityChecks = new HashMap<String, Boolean>();
+		commandChecks = new HashMap<String, String>();
 
         //load data
         loadPartIntegrities();
@@ -60,10 +63,34 @@ public class Console{
         integrityChecks.put("game", true);
     }
 
-    /* reads description of all system functions from file and loads into partsMap.
+    /* creates the map for all system commands and their description.
      */
     private void loadHelpDescriptions(){
         System.out.println("WIP: LOAD_HELP_DESCRIPTIONS");
+		//essential (Level A)
+        commandChecks.put("boot", "TBD");
+        commandChecks.put("main_menu", "TBD");
+        commandChecks.put("shutdown", "TBD");
+
+        //important (Level B)
+        commandChecks.put("help", "Usage: help [OPTIONAL: name of command]\n\nDescription:\n\nPrints a list of all commands or detailed information about a specified command.");
+        commandChecks.put("settings", "Usage: settings\n\nDescription:\n\nOpens a dialogue stating all current system settings and giving options to change said system settings. Some examples of system settings include volume control, screen brightness, and text color.");
+        commandChecks.put("system_information", "Usage: system_information\n\nDescription:\n\nRuns integrity and performance checks and displays the results. This includes information about the system hardware (latency, memory, hard drive, etc) and system software (integrity of functions).");
+        commandChecks.put("repair", "Usage: repair (REQUIRED: name of command or component)\n\nDescription:\n\nAttempts to repair given command or part.");
+        commandChecks.put("reboot", "Usage: reboot\n\nDescription:\n\nReboots the system, running shutdown followed by boot. May be necessary for certain updates, which finish installation on shutdown, or useful to flush RAM.");
+
+        //basic (Level C)
+        commandChecks.put("query", "TBD");
+        commandChecks.put("logs", "TBD");
+        commandChecks.put("recipes", "TBD");
+        commandChecks.put("disc", "TBD");
+
+        //advanced (Level D)
+        commandChecks.put("map", "TBD");
+        commandChecks.put("scan", "TBD");
+
+        //other (Level E)
+        commandChecks.put("game", "TBD");
     }
 
 
@@ -104,7 +131,7 @@ public class Console{
                 String[] comms = getCommandsInLevel(level);
                 for(String s : comms){
                     slowWrite("\t\t" + s + "...", 0);
-                    sleep(((int) Math.random() * 500) + 1250);
+                    sleep(500);
                     printIntegrity((integrityChecks.get(s)) ? 1 : -1);
                 }
             }
@@ -184,7 +211,7 @@ public class Console{
                         repair(command.get(1));
                     }
                     else{
-                        slowWrite("Usage: repair [TARGET]");
+                        slowWrite("Usage: repair (REQUIRED: name of command or component)");
                         slowWrite("Try \'help repair\' for more information.");
                     }
                 }
@@ -299,7 +326,6 @@ public class Console{
     
     //important methods (Level B)
     public void help(){
-        System.out.println("HELP UNFINISHED...\n");
         System.out.println("----Commands----");
         System.out.println("Essential (Level A)");
 		System.out.println("\tboot");
@@ -326,9 +352,17 @@ public class Console{
         System.out.println("Other (Level E)");
         System.out.println("\tgame");
         System.out.println("---------------");
+		
+		slowWrite("\nTo use a command, simply type the command into the terminal. The terminal is not case sensitive. For more information, type \'help\' and then the command name (do not include the quotation marks).", 0, 1);
     }
     public void help(String componentName){
-		
+		if(integrityChecks.containsKey(componentName)){
+			slowWrite(commandChecks.get(componentName));
+		}
+		else{
+			slowWrite("Usage: help [OPTIONAL: name of command]");
+            slowWrite("Try \'help help\' for more information.");
+		}
 	}
     
     public void settings(){
@@ -491,7 +525,7 @@ public class Console{
         String[] commandsToCheck = getCommandsInLevel(level);
         int count = 0;
         for(String s : commandsToCheck){
-            sleep(((int) Math.random() * 1000) + 1500);
+            sleep(700);
             if(integrityChecks.get(s)){
                 count++;
             }
