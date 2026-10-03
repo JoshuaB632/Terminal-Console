@@ -315,10 +315,13 @@ public class Console{
 
     public void shutdown(){
         System.out.println("WIP: SHUTDOWN");
-        //if any unsaved work
-            //check if user really wants to shutdown
-
-        //run any code needed to close programs
+        /*
+		flavor text
+		change hardware and software stats (ram, disk size, command repairs/upgrades, etc)
+		save hardware and software stats
+		listen until "power on" signal
+		call boot()
+		*/
 
         powered = false;
     }
