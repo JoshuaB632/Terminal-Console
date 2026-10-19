@@ -16,3 +16,5 @@ This is a small passion project to create a gamified version of a terminal to be
 
 ### Further Comments
 The project is far from complete, but I hope it serves as a valuable experience to practice effective planning and perspective skills. Currently there is also a "project" on Github where I am planning out future work and prioritizing developments.
+
+Another note is about Contributors for this project. I am new to using Github and accidentally used another account when updating the project, so the contributor "MattHemedez" was also me.
