@@ -13,6 +13,15 @@ public class Console{
     private String currentInterface;
     private boolean powered;
 
+	public class Part{
+		private String part_name;
+		private boolean part_integrity;
+		private String part_description;
+		
+		//Hardware
+		private 
+	}
+
     //TODO: convert Boolean to custom Part class with integrity boolean inside
     private HashMap<String, Boolean> integrityChecks;
 	//TODO: convert String to custom Part class with description inside
