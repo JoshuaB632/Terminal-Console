@@ -14,93 +14,117 @@ public class Console{
     private boolean powered;
 
 	public class Part{
-		private String part_name;
 		private boolean part_integrity;
 		private String part_description;
+	
+		private float disk_required;
+		private float ram_usage;
+		private float cpu_usage;
+		private float power_usage;
 		
-		//Hardware
-		private 
+		private int upgrade_level = 0;
+		//Each row is a list of resources needed for one upgrade
+		private String[][] upgrade_matrix;
+		
+		
+		//Constructors
+		public Part(boolean integ, String desc, float disk, float ram, float cpu, float power, String[][] upgrades){
+			part_integrity = integ;
+			part_description = desc;
+			
+			disk_required = disk;
+			ram_usage = ram;
+			cpu_usage = cpu;
+			power_usage = power;
+			
+			upgrade_matrix = upgrades;
+		}
+		
+		
+		//Getters
+		public boolean getIntegrity(){
+			return part_integrity;
+		}
+		public String getDescription(){
+			return part_description;
+		}
+		
+		public float getDisk(){
+			return disk_required;
+		}
+		public float getRAM(){
+			return ram_usage;
+		}
+		public float getCPU(){
+			return cpu_usage;
+		}
+		public float getPower(){
+			return power_usage;
+		}
+		
+		public String[] getUpgrade(){
+			return upgrade_matrix[0];
+		}
+		
+		
+		//Methods
+		public void setIntegrity(boolean newIntegrity){
+			if(newIntegrity){
+				//extra check if part can be repaired?
+				part_integrity = newIntegrity;
+			}
+			else if(!newIntegrity){
+				//maybe extra check if already broken then something bad happens?
+				part_integrity = newIntegrity;
+			}
+		}
 	}
-
-    //TODO: convert Boolean to custom Part class with integrity boolean inside
-    private HashMap<String, Boolean> integrityChecks;
-	//TODO: convert String to custom Part class with description inside
-	private HashMap<String, String> commandChecks;
+	
+	private HashMap<String, Part> consoleParts;
     
     //Constructors
     public Console(){
         //Initialize variables
         currentInterface = "constructor";
         powered = false;
-        integrityChecks = new HashMap<String, Boolean>();
-		commandChecks = new HashMap<String, String>();
-
-        //load data
-        loadPartIntegrities();
-        loadHelpDescriptions();
+		consoleParts = loadParts();
     }
 
 
 
     //Initializers
-    /* creates the map for all system functions and whether they are functional or not.
-     */
-    private void loadPartIntegrities(){
-        //essential (Level A)
-        integrityChecks.put("boot", true);
-        integrityChecks.put("main_menu", true);
-        integrityChecks.put("shutdown", false);
-
-        //important (Level B)
-        integrityChecks.put("help", true);
-        integrityChecks.put("settings", false);
-        integrityChecks.put("system_information", true);
-        integrityChecks.put("repair", true);
-        integrityChecks.put("reboot", false);
-
-        //basic (Level C)
-        integrityChecks.put("query", false);
-        integrityChecks.put("logs", false);
-        integrityChecks.put("recipes", false);
-        integrityChecks.put("disc", false);
-
-        //advanced (Level D)
-        integrityChecks.put("map", false);
-        integrityChecks.put("scan", false);
-
-        //other (Level E)
-        integrityChecks.put("game", true);
-    }
-
-    /* creates the map for all system commands and their description.
-     */
-    private void loadHelpDescriptions(){
-        System.out.println("WIP: LOAD_HELP_DESCRIPTIONS");
+    /* loads the beginner parts plus integrities
+	 */
+	private HashMap<String, Part> loadParts(){
+		HashMap<String, Part> partList = new HashMap<String, Part>();
+		
 		//essential (Level A)
-        commandChecks.put("boot", "TBD");
-        commandChecks.put("main_menu", "TBD");
-        commandChecks.put("shutdown", "TBD");
-
-        //important (Level B)
-        commandChecks.put("help", "Usage: help [OPTIONAL: name of command]\n\nDescription:\n\nPrints a list of all commands or detailed information about a specified command.");
-        commandChecks.put("settings", "Usage: settings\n\nDescription:\n\nOpens a dialogue stating all current system settings and giving options to change said system settings. Some examples of system settings include volume control, screen brightness, and text color.");
-        commandChecks.put("system_information", "Usage: system_information\n\nDescription:\n\nRuns integrity and performance checks and displays the results. This includes information about the system hardware (latency, memory, hard drive, etc) and system software (integrity of functions).");
-        commandChecks.put("repair", "Usage: repair (REQUIRED: name of command or component)\n\nDescription:\n\nAttempts to repair given command or part.");
-        commandChecks.put("reboot", "Usage: reboot\n\nDescription:\n\nReboots the system, running shutdown followed by boot. May be necessary for certain updates, which finish installation on shutdown, or useful to flush RAM.");
-
-        //basic (Level C)
-        commandChecks.put("query", "TBD");
-        commandChecks.put("logs", "TBD");
-        commandChecks.put("recipes", "TBD");
-        commandChecks.put("disc", "TBD");
-
-        //advanced (Level D)
-        commandChecks.put("map", "TBD");
-        commandChecks.put("scan", "TBD");
-
-        //other (Level E)
-        commandChecks.put("game", "TBD");
-    }
+        partList.put("boot", new Part(true, "TBD", 0, 0, 0, 0, null));
+		partList.put("main_menu", new Part(true, "TBD", 0, 0, 0, 0, null));
+		partList.put("shutdown", new Part(false, "TBD", 0, 0, 0, 0, null));
+		
+		//important (Level B)
+		partList.put("help", new Part(true, "Usage: help [OPTIONAL: name of command]\n\nDescription:\n\nPrints a list of all commands or detailed information about a specified command.", 0, 0, 0, 0, null));
+		partList.put("settings", new Part(false, "Usage: settings\n\nDescription:\n\nOpens a dialogue stating all current system settings and giving options to change said system settings. Some examples of system settings include volume control, screen brightness, and text color.", 0, 0, 0, 0, null));
+		partList.put("system_information", new Part(true, "Usage: system_information\n\nDescription:\n\nRuns integrity and performance checks and displays the results. This includes information about the system hardware (latency, memory, hard drive, etc) and system software (integrity of functions).", 0, 0, 0, 0, null));
+		partList.put("repair", new Part(true, "Usage: repair (REQUIRED: name of command or component)\n\nDescription:\n\nAttempts to repair given command or part.", 0, 0, 0, 0, null));
+		partList.put("reboot", new Part(false, "Usage: reboot\n\nDescription:\n\nReboots the system, running shutdown followed by boot. May be necessary for certain updates, which finish installation on shutdown, or useful to flush RAM.", 0, 0, 0, 0, null));
+		
+		//basic (Level C)
+		partList.put("query", new Part(false, "TBD", 0, 0, 0, 0, null));
+		partList.put("logs", new Part(false, "TBD", 0, 0, 0, 0, null));
+		partList.put("recipes", new Part(false, "TBD", 0, 0, 0, 0, null));
+		partList.put("disc", new Part(false, "TBD", 0, 0, 0, 0, null));
+		
+		//advanced (Level D)
+		partList.put("map", new Part(false, "TBD", 0, 0, 0, 0, null));
+		partList.put("scan", new Part(false, "TBD", 0, 0, 0, 0, null));
+		
+		//other (Level E)
+		partList.put("game", new Part(true, "TBD", 0, 0, 0, 0, null));
+		
+		return partList;
+	}
 
 
 
@@ -110,7 +134,7 @@ public class Console{
         powered = true;
         currentInterface = "boot";
         System.out.println("WIP: BOOT");
-        if(!integrityChecks.get("boot")){
+        if(!consoleParts.get("boot").getIntegrity()){
             slowWrite("Failed to run boot...");
             powered = false;
             slowWrite("Exiting...");
@@ -141,7 +165,7 @@ public class Console{
                 for(String s : comms){
                     slowWrite("\t\t" + s + "...", 0);
                     sleep(500);
-                    printIntegrity((integrityChecks.get(s)) ? 1 : -1);
+                    printIntegrity((consoleParts.get(s).getIntegrity()) ? 1 : -1);
                 }
             }
             sleep(200);
@@ -161,158 +185,160 @@ public class Console{
             System.out.print("Terminal:> ");
             ArrayList<String> command = split(next(true));
             String input = command.get(0);
+			
+			if(consoleParts.containsKey(input)){
+				if(input.equals("boot")){
+					slowWrite("Boot is a built-in program and cannot be called manually.");
+				}
+				else if(input.equals("main_menu")){
+					slowWrite("Already running main_menu.");
+				}
+				else if(input.equals("shutdown")){
+					if(consoleParts.get("shutdown").getIntegrity()){
+						shutdown();
+					}
+					else{
+						slowWrite("Program \'shutdown\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
 
-			if(input.equals("boot")){
-				slowWrite("Boot is a built-in program and cannot be called manually.");
+				else if(input.equals("help")){
+					if(consoleParts.get("help").getIntegrity()){
+						if(command.size() >= 2){
+							help(command.get(1));
+						}
+						else{
+							help();
+						}
+					}
+					else{
+						slowWrite("Program \'help\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+				else if(input.equals("settings")){
+					if(consoleParts.get("settings").getIntegrity()){
+						settings();
+					}
+					else{
+						slowWrite("Program \'settings\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+				else if(input.equals("system_information")){
+					if(consoleParts.get("system_information").getIntegrity()){
+						system_information();
+					}
+					else{
+						slowWrite("Program \'system_information\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+				else if(input.equals("repair")){
+					if(consoleParts.get("repair").getIntegrity()){
+						if(command.size() >= 2){
+							repair(command.get(1));
+						}
+						else{
+							slowWrite("Usage: repair (REQUIRED: name of command or component)");
+							slowWrite("Try \'help repair\' for more information.");
+						}
+					}
+					else{
+						slowWrite("Program \'repair\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+				else if(input.equals("reboot")){
+					if(consoleParts.get("reboot").getIntegrity()){
+						reboot();
+					}
+					else{
+						slowWrite("Program \'reboot\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+
+				else if(input.equals("query")){
+					if(consoleParts.get("query").getIntegrity()){
+						query();
+					}
+					else{
+						slowWrite("Program \'query\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+				else if(input.equals("logs")){
+					if(consoleParts.get("logs").getIntegrity()){
+						logs();
+					}
+					else{
+						slowWrite("Program \'logs\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+				else if(input.equals("recipes")){
+					if(consoleParts.get("recipes").getIntegrity()){
+						recipes();
+					}
+					else{
+						slowWrite("Program \'recipes\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+				else if(input.equals("disc")){
+					if(consoleParts.get("disc").getIntegrity()){
+						disc();
+					}
+					else{
+						slowWrite("Program \'disc\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+
+				else if(input.equals("map")){
+					if(consoleParts.get("map").getIntegrity()){
+						map();
+					}
+					else{
+						slowWrite("Program \'map\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+				else if(input.equals("scan")){
+					if(consoleParts.get("scan").getIntegrity()){
+						scan();
+					}
+					else{
+						slowWrite("Program \'scan\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
+
+				else if(input.equals("game")){
+					if(consoleParts.get("game").getIntegrity()){
+						game();
+					}
+					else{
+						slowWrite("Program \'game\' is not stable.");
+						//Eventually add option for user to proceed even if not stable,
+						//  causing either a crash or only partial functionality
+					}
+				}
 			}
-			else if(input.equals("main_menu")){
-				slowWrite("Already running main_menu.");
-			}
-            else if(input.equals("shutdown")){
-                if(integrityChecks.get("shutdown")){
-                    shutdown();
-                }
-                else{
-                    slowWrite("Program \'shutdown\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-
-            else if(input.equals("help")){
-                if(integrityChecks.get("help")){
-                    if(command.size() >= 2){
-                        help(command.get(1));
-                    }
-                    else{
-                        help();
-                    }
-                }
-                else{
-                    slowWrite("Program \'help\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-            else if(input.equals("settings")){
-                if(integrityChecks.get("settings")){
-                    settings();
-                }
-                else{
-                    slowWrite("Program \'settings\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-            else if(input.equals("system_information")){
-                if(integrityChecks.get("system_information")){
-                    system_information();
-                }
-                else{
-                    slowWrite("Program \'system_information\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-            else if(input.equals("repair")){
-                if(integrityChecks.get("repair")){
-                    if(command.size() >= 2){
-                        repair(command.get(1));
-                    }
-                    else{
-                        slowWrite("Usage: repair (REQUIRED: name of command or component)");
-                        slowWrite("Try \'help repair\' for more information.");
-                    }
-                }
-                else{
-                    slowWrite("Program \'repair\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-            else if(input.equals("reboot")){
-                if(integrityChecks.get("reboot")){
-                    reboot();
-                }
-                else{
-                    slowWrite("Program \'reboot\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-
-            else if(input.equals("query")){
-                if(integrityChecks.get("query")){
-                    query();
-                }
-                else{
-                    slowWrite("Program \'query\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-            else if(input.equals("logs")){
-                if(integrityChecks.get("logs")){
-                    logs();
-                }
-                else{
-                    slowWrite("Program \'logs\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-            else if(input.equals("recipes")){
-                if(integrityChecks.get("recipes")){
-                    recipes();
-                }
-                else{
-                    slowWrite("Program \'recipes\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-            else if(input.equals("disc")){
-                if(integrityChecks.get("disc")){
-                    disc();
-                }
-                else{
-                    slowWrite("Program \'disc\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-
-            else if(input.equals("map")){
-                if(integrityChecks.get("map")){
-                    map();
-                }
-                else{
-                    slowWrite("Program \'map\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-            else if(input.equals("scan")){
-                if(integrityChecks.get("scan")){
-                    scan();
-                }
-                else{
-                    slowWrite("Program \'scan\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
-
-            else if(input.equals("game")){
-                if(integrityChecks.get("game")){
-                    game();
-                }
-                else{
-                    slowWrite("Program \'game\' is not stable.");
-                    //Eventually add option for user to proceed even if not stable,
-                    //  causing either a crash or only partial functionality
-                }
-            }
 
             else{
                 slowWrite("-bash: " + input + ": command not found");
@@ -368,8 +394,8 @@ public class Console{
 		slowWrite("\nTo use a command, simply type the command into the terminal. The terminal is not case sensitive. For more information, type \'help\' and then the command name (do not include the quotation marks).", 0, 1);
     }
     public void help(String componentName){
-		if(integrityChecks.containsKey(componentName)){
-			slowWrite(commandChecks.get(componentName));
+		if(consoleParts.containsKey(componentName)){
+			slowWrite(consoleParts.get(componentName).getDescription());
 		}
 		else{
 			slowWrite("Usage: help [OPTIONAL: name of command]");
@@ -404,7 +430,7 @@ public class Console{
             String[] comms = getCommandsInLevel(level);
             for(String s : comms){
                 System.out.print("\t\t" + s + "...");
-                printIntegrity((integrityChecks.get(s)) ? 1 : -1);
+                printIntegrity((consoleParts.get(s).getIntegrity()) ? 1 : -1);
             }
         }
 
@@ -432,8 +458,8 @@ public class Console{
 
         slowWrite("Attempting to repair \'" + componentName + "\'...");
         System.out.println("\tWIP");
-        if(!integrityChecks.get(componentName)){ //Need to make an actual check to see if it can be repaired
-            integrityChecks.put(componentName, true);
+        if(!consoleParts.get(componentName).getIntegrity()){ //Need to make an actual check to see if it can be repaired
+            consoleParts.get(componentName).setIntegrity(true);
             slowWrite("\'" + componentName + "\' has been repaired!");
         }
         else{
@@ -538,7 +564,7 @@ public class Console{
         int count = 0;
         for(String s : commandsToCheck){
             sleep(700);
-            if(integrityChecks.get(s)){
+            if(consoleParts.get(s).getIntegrity()){
                 count++;
             }
         }
